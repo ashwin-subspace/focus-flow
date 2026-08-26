@@ -28,8 +28,22 @@
 
   els.ring.style.strokeDasharray = String(RING_CIRCUMFERENCE);
 
+  // A streak day has to end at the user's own midnight, so this reads the local
+  // calendar fields. toISOString() would date every session by UTC instead, moving
+  // the rollover to mid-evening or mid-morning everywhere outside UTC.
   function todayStr(d = new Date()) {
-    return d.toISOString().slice(0, 10);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  // Steps the calendar back a day rather than subtracting 24h, which lands on the
+  // wrong date across a daylight-saving change (those days are 23 or 25 hours long).
+  function yesterdayStr() {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return todayStr(d);
   }
 
   function loadState() {
@@ -301,7 +315,7 @@
   function bumpStreak() {
     const today = todayStr();
     if (state.streak.lastDate === today) return;
-    const yesterday = todayStr(new Date(Date.now() - 86400000));
+    const yesterday = yesterdayStr();
     if (state.streak.lastDate === yesterday) {
       state.streak.count += 1;
     } else {
@@ -379,7 +393,7 @@
   // recompute against the real clock and fire completion if it elapsed while away.
   function resync() {
     if (state.streak.lastDate && state.streak.lastDate !== todayStr()) {
-      const yesterday = todayStr(new Date(Date.now() - 86400000));
+      const yesterday = yesterdayStr();
       if (state.streak.lastDate !== yesterday) {
         state.streak.count = 0;
         saveState();
