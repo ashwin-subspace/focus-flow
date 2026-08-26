@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Focus Flow</title>
+
+<meta name="description" content="A focus timer with tasks, pomodoro tracking and daily streaks.">
+<meta name="theme-color" content="#0f1115">
+<link rel="manifest" href="manifest.webmanifest">
+
+<!-- iOS ignores the manifest: standalone mode and the home-screen icon come from these. -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Focus Flow">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <h1>Focus Flow</h1>
+      <div class="streak" id="streak-display">
+        <span class="streak-flame">🔥</span>
+        <span id="streak-count">0</span>
+        <span class="streak-label">day streak</span>
+      </div>
+    </header>
+
+    <main class="timer-section">
+      <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="work">Focus</button>
+        <button class="mode-tab" data-mode="short">Short Break</button>
+        <button class="mode-tab" data-mode="long">Long Break</button>
+      </div>
+
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 260 260">
+          <circle class="ring-track" cx="130" cy="130" r="120"></circle>
+          <circle class="ring-progress" id="ring-progress" cx="130" cy="130" r="120"></circle>
+        </svg>
+        <div class="ring-center">
+          <div class="time-display" id="time-display">25:00</div>
+          <div class="session-label" id="session-label">Focus Session</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-secondary" id="reset-btn" title="Reset">↺</button>
+        <button class="btn btn-primary" id="start-btn">Start</button>
+        <button class="btn btn-secondary" id="skip-btn" title="Skip">⏭</button>
+      </div>
+
+      <div class="pomodoro-dots" id="pomodoro-dots"></div>
+    </main>
+
+    <section class="tasks-section">
+      <div class="tasks-header">
+        <h2>Tasks</h2>
+        <span class="tasks-count" id="tasks-count">0 active</span>
+      </div>
+      <form id="task-form" class="task-form">
+        <input type="text" id="task-input" placeholder="What are you working on?" autocomplete="off" maxlength="120">
+        <button type="submit" class="btn btn-add">Add</button>
+      </form>
+      <ul id="task-list" class="task-list"></ul>
+      <p class="empty-state" id="empty-state">No tasks yet. Add one to get started.</p>
+    </section>
+
+    <div class="install-hint" id="install-hint" hidden>
+      <span id="install-text"></span>
+      <button class="btn btn-install" id="install-btn" hidden>Install</button>
+      <button class="install-dismiss" id="install-dismiss" aria-label="Dismiss">×</button>
+    </div>
+
+    <div class="celebration" id="celebration"></div>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
